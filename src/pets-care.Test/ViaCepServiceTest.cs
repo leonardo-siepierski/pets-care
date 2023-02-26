@@ -11,9 +11,9 @@ namespace pets_care.Test
     public class ViaCepServiceTest
     {
         [Theory]
-        [InlineData("04321020")]
-        [InlineData("14730000")]
-        public async Task ShouldReturnUniversityByCountryAndName(string cep)
+        [InlineData("04321-020")]
+        [InlineData("14730-000")]
+        public async Task ShouldReturnAdressByCep(string cep)
         {
             //  Arrange
             var mockClient = new Mock<HttpClient>();
@@ -24,6 +24,9 @@ namespace pets_care.Test
 
             // Assert
             result.Should().BeOfType<JsonElement>();
+            result?.ToString().Should().Contain("cep");
+            result?.ToString().Should().Contain("localidade");
+            result?.ToString().Should().Contain(cep);
         }
     }
 }

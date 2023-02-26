@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace pets_care.Services
 {
-    public class ViaCepService
+    public class ViaCepService : IViaCepService
     {
         private readonly HttpClient _client;
         private readonly string _baseUrl = "https://viacep.com.br/ws/";

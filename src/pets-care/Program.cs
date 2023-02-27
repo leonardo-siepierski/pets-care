@@ -1,3 +1,5 @@
+using pets_care.Models;
+using pets_care.Repository;
 using pets_care.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +11,28 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// DB
+builder.Services.AddDbContext<PetCareContext>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
+// ENVIROMENT SET
+DotNetEnv.Env.Load();
+
+using (var db = new PetCareContext())
+{
+    db.Database.EnsureDeleted();
+    db.Database.EnsureCreated();
+    // Código executado no banco de dados aqui
+
+    var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = 04321020, Password = "rwarwagvaw" };
+    db.Clients.Add(client);
+    db.SaveChanges();
+}
+
+
 // HTTPCLIENTS
 builder.Services.AddHttpClient<IViaCepService, ViaCepService>();
+
 
 var app = builder.Build();
 
@@ -26,5 +48,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();

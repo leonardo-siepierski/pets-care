@@ -61,7 +61,7 @@ namespace pets_care.Controllers
 
                 _clientRepository.CreateClient(client);
 
-                return Ok($"Created!");
+                return Ok("Client Created!");
             }
             catch (System.Exception ex)
             {
@@ -81,7 +81,7 @@ namespace pets_care.Controllers
 
                 _clientRepository.UpdateClient(clientFound, clientRequest);
 
-                return Ok($"Client Updated!");
+                return Ok("Client Updated!");
             }
             catch (System.Exception ex)
             {
@@ -99,7 +99,7 @@ namespace pets_care.Controllers
 
                 _clientRepository.DeleteClient(clientFound);
 
-                return Ok($"Client Deleted!");
+                return Ok("Client Deleted!");
             }
             catch (System.Exception ex)
             {

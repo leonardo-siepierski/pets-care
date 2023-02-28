@@ -63,6 +63,12 @@ namespace pets_care.Repository
 
         public void UpdateClient(Client client, ClientRequest clientRequest)
         {
+            // update all colunms
+            // _context.Entry(client).State = EntityState.Modified;
+
+            // update only the changed colunms
+            _context.Clients.Attach(client);
+
             client.Name = clientRequest.Name;
             client.Email = clientRequest.Email;
             client.ModifiedAt = DateTime.Now.ToString();

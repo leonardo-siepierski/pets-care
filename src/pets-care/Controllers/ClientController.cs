@@ -33,7 +33,7 @@ namespace pets_care.Controllers
 
                 return Ok(clients);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -45,31 +45,31 @@ namespace pets_care.Controllers
             try
             {
                 var client = await _clientRepository.GetClientByID(id);
-                if (client == null) return NotFound();
+                if (client == null) return NotFound("Client not found");
 
                 return Ok(client);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> CreateClient([FromBody] Client client)
+        public async Task<ActionResult<string?>> CreateClient([FromBody] Client client)
         {
             try
             {
                 if (client == null) return NotFound();
 
                 var viaCepServiceResponse = await _viaCepService.FindAdress(client.Cep);
-                if (viaCepServiceResponse == null || viaCepServiceResponse.ToString().Contains("erro")) return BadRequest("Cep doesn't exist");
+                if (viaCepServiceResponse == null || viaCepServiceResponse.ToString().Contains("erro")) return BadRequest("Cep not found");
 
-                _clientRepository.CreateClient(client);
+                var createdClient = await _clientRepository.CreateClient(client);
 
-                return Ok("Client Created!");
+                return CreatedAtAction(nameof(GetClientById), new { id = createdClient?.ClientId}, createdClient);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -83,13 +83,13 @@ namespace pets_care.Controllers
                 if (clientRequest == null) return NotFound();
 
                 var clientFound = await _clientRepository.GetClientByID(id);
-                if(clientFound == null) return NotFound();
+                if(clientFound == null) return NotFound("Client not found");
 
                 _clientRepository.UpdateClient(clientFound, clientRequest);
 
                 return Ok("Client Updated!");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -101,13 +101,13 @@ namespace pets_care.Controllers
             try
             {
                 var clientFound = await _clientRepository.GetClientByID(id);
-                if(clientFound == null) return NotFound();
+                if(clientFound == null) return NotFound("Client not found");
 
                 _clientRepository.DeleteClient(clientFound);
 
                 return Ok("Client Deleted!");
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

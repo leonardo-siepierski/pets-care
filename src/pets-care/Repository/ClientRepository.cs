@@ -33,7 +33,7 @@ namespace pets_care.Repository
             return client;
         }
 
-        public async void CreateClient(Client client)
+        public async Task<Client?> CreateClient(Client client)
         {
             var salt = DateTime.Now.ToString();
             var passwordHashed = HashPassword(client.Password, salt);
@@ -53,6 +53,8 @@ namespace pets_care.Repository
             await _context.Clients.AddAsync(newClient);
 
             _context.SaveChanges();
+
+            return newClient;
         }
 
         public void DeleteClient(Client client)

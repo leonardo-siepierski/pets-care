@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using pets_care.Models;
 using pets_care.Repository;
+using pets_care.Requests;
 
 namespace pets_care.Controllers
 {
@@ -46,6 +47,43 @@ namespace pets_care.Controllers
                 if (client == null) return NotFound();
 
                 return Ok(client);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult<string> CreateClient([FromBody] Client client)
+        {
+            try
+            {
+                if (client == null) return NotFound();
+
+                _clientRepository.CreateClient(client);
+
+                return Ok($"Created!");
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<string>> UpdateClient(Guid id, [FromBody] ClientRequest clientRequest)
+        {
+            try
+            {
+                if (clientRequest == null) return NotFound();
+
+                var clientFound = await _clientRepository.GetClientByID(id);
+                if(clientFound == null) return NotFound();
+
+                _clientRepository.UpdateClient(clientFound, clientRequest);
+
+                return Ok($"Updated!");
             }
             catch (System.Exception ex)
             {

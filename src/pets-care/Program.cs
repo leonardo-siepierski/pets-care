@@ -20,11 +20,11 @@ DotNetEnv.Env.Load();
 
 using (var db = new PetCareContext())
 {
+    // Código executado no banco de dados aqui
     db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
-    // Código executado no banco de dados aqui
 
-    var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = 04321020, Password = "rwarwagvaw" };
+    var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = "04321020", Password = "rwarwagvaw", CreatedAt = DateTime.Now.ToString(), ModifiedAt = DateTime.Now.ToString() };
     db.Clients.Add(client);
     db.SaveChanges();
 }

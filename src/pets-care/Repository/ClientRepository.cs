@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using pets_care.Models;
+using pets_care.Requests;
 
 namespace pets_care.Repository
 {
@@ -30,9 +33,26 @@ namespace pets_care.Repository
             return client;
         }
 
-        public async void InsertClient(Client client)
+        public async void CreateClient(Client client)
         {
-            await _context.Clients.AddAsync(client);
+            var salt = DateTime.Now.ToString();
+            var passwordHashed = HashPassword(client.Password, salt);
+            
+            var newClient = new Client
+            {
+                ClientId = Guid.NewGuid(),
+                Name = client.Name,
+                Email = client.Email,
+                Cep = client.Cep,
+                Adress = client.Adress,
+                Password = passwordHashed,
+                CreatedAt = salt,
+                ModifiedAt = salt,
+            };
+
+            await _context.Clients.AddAsync(newClient);
+
+            _context.SaveChanges();
         }
 
         public void DeleteClient(Client client)
@@ -40,15 +60,33 @@ namespace pets_care.Repository
             _context.Clients.Remove(client);
         }
 
-        public void UpdateClient(Client client)
+        public void UpdateClient(Client client, ClientRequest clientRequest)
         {
-            _context.Entry(client).State = EntityState.Modified;
-        }
+            client.Name = clientRequest.Name;
+            client.Email = clientRequest.Email;
+            client.Cep = clientRequest.Cep;
+            client.Adress = clientRequest.Adress;
+            client.ModifiedAt = DateTime.Now.ToString();
 
-        public void Save()
-        {
             _context.SaveChanges();
         }
+
+        public string HashPassword(string password, string salt)
+        {
+            SHA256 hash = SHA256.Create();
+
+            var passwordBytes = Encoding.Default.GetBytes($"{password}{salt}");
+            var hashedPassword = hash.ComputeHash(passwordBytes);
+
+            return Convert.ToHexString(hashedPassword);
+        }
+
+        // public void CheckIfExist()
+        // {
+        //     var client = await _context.Clients.FindAsync();
+
+        //     return client;
+        // }
 
         private bool disposed = false;
 

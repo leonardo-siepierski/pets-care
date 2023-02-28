@@ -16,18 +16,24 @@ namespace pets_care.Models
         [MaxLength(20, ErrorMessage = "Adress must have less then 20 digits")]
         public string Name { get; set; } = null!;
 
-        [EmailAddress(ErrorMessage = "O email deve ter o formato correto")]
+        [EmailAddress(ErrorMessage = "Unvalid email format")]
         public string Email { get; set; } = null!;
 
-        [Range(8, 8, ErrorMessage= "Cep must have 8 digits")]
-        public int Cep { get; set; }
+        [MinLength(8, ErrorMessage= "Cep must have 8 digits")]
+        [MaxLength(8, ErrorMessage= "Cep must have 8 digits")]
+        public string Cep { get; set; } = null!;
 
         [MinLength(6, ErrorMessage = "Adress must have more then 6 digits")]
         public string Adress { get; set; } = null!;
 
-        [Range(6, 15, ErrorMessage = "Password must be between 6 and 15 digits")]
+        // [Range(6, 15, ErrorMessage = "Password must be between 6 and 15 digits")]
+        [MinLength(6, ErrorMessage= "Password must have more than 6 digits")]
         public string Password { get; set; } = null!;
 
-        
+        [DataType("dd/MM/yyyy")]
+        public string CreatedAt { get; set; } = null!;
+
+        [DataType("dd/MM/yyyy")]
+        public string ModifiedAt { get; set; } = null!;
     }
 }

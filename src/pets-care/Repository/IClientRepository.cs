@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using pets_care.Models;
+using pets_care.Requests;
 
 namespace pets_care.Repository
 {
@@ -10,9 +11,8 @@ namespace pets_care.Repository
     {
         Task<IEnumerable<Client>> GetClients();
         Task<Client?> GetClientByID(Guid clientId);
-        void InsertClient(Client client);
+        void CreateClient(Client client);
+        void UpdateClient(Client client, ClientRequest clientRequest);
         void DeleteClient(Client client);
-        void UpdateClient(Client client);
-        void Save();
     }
 }

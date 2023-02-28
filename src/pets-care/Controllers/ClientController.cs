@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using pets_care.Models;
 using pets_care.Repository;
 using pets_care.Requests;
+using pets_care.Services;
 
 namespace pets_care.Controllers
 {
@@ -14,10 +15,12 @@ namespace pets_care.Controllers
     public class ClientController : Controller
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IViaCepService _viaCepService;
 
-        public ClientController(IClientRepository clientRepository)
+        public ClientController(IClientRepository clientRepository, IViaCepService viaCepService)
         {
             _clientRepository = clientRepository;
+            _viaCepService = viaCepService;
         }
 
         [HttpGet]
@@ -53,11 +56,14 @@ namespace pets_care.Controllers
         }
 
         [HttpPost]
-        public ActionResult<string> CreateClient([FromBody] Client client)
+        public async Task<ActionResult<string>> CreateClient([FromBody] Client client)
         {
             try
             {
                 if (client == null) return NotFound();
+
+                var viaCepServiceResponse = await _viaCepService.FindAdress(client.Cep);
+                if (viaCepServiceResponse == null || viaCepServiceResponse.ToString().Contains("erro")) return BadRequest("Cep doesn't exist");
 
                 _clientRepository.CreateClient(client);
 

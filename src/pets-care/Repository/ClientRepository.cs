@@ -58,14 +58,13 @@ namespace pets_care.Repository
         public void DeleteClient(Client client)
         {
             _context.Clients.Remove(client);
+            _context.SaveChanges();
         }
 
         public void UpdateClient(Client client, ClientRequest clientRequest)
         {
             client.Name = clientRequest.Name;
             client.Email = clientRequest.Email;
-            client.Cep = clientRequest.Cep;
-            client.Adress = clientRequest.Adress;
             client.ModifiedAt = DateTime.Now.ToString();
 
             _context.SaveChanges();

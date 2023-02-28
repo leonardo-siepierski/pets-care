@@ -13,7 +13,7 @@ namespace pets_care.Controllers
     [Route("[controller]")]
     public class ClientController : Controller
     {
-        private IClientRepository _clientRepository;
+        private readonly IClientRepository _clientRepository;
 
         public ClientController(IClientRepository clientRepository)
         {
@@ -26,7 +26,6 @@ namespace pets_care.Controllers
             try
             {
                 var clients = await _clientRepository.GetClients();
-
                 if (clients == null) return NotFound();
 
                 return Ok(clients);
@@ -43,7 +42,6 @@ namespace pets_care.Controllers
             try
             {
                 var client = await _clientRepository.GetClientByID(id);
-
                 if (client == null) return NotFound();
 
                 return Ok(client);
@@ -83,7 +81,25 @@ namespace pets_care.Controllers
 
                 _clientRepository.UpdateClient(clientFound, clientRequest);
 
-                return Ok($"Updated!");
+                return Ok($"Client Updated!");
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<string>> DeleteClient(Guid id)
+        {
+            try
+            {
+                var clientFound = await _clientRepository.GetClientByID(id);
+                if(clientFound == null) return NotFound();
+
+                _clientRepository.DeleteClient(clientFound);
+
+                return Ok($"Client Deleted!");
             }
             catch (System.Exception ex)
             {

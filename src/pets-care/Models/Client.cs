@@ -13,7 +13,7 @@ namespace pets_care.Models
         [Key]
         public Guid ClientId { get; set; }
 
-        [MaxLength(20, ErrorMessage = "Adress must have less then 20 digits")]
+        [MinLength(6, ErrorMessage = "Name must have more than 6 digits")]
         public string Name { get; set; } = null!;
 
         [EmailAddress(ErrorMessage = "Unvalid email format")]

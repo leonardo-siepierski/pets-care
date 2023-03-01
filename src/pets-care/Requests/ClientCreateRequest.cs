@@ -28,5 +28,9 @@ namespace pets_care.Requests
         [MinLength(6, ErrorMessage= "Password must have more than 6 digits")]
         [Required(ErrorMessage = "Missing field Password")]
         public string Password { get; set; } = null!;
+
+        [Required(ErrorMessage = "Required.")]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; } = null!;
     }
 }

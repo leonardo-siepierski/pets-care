@@ -32,7 +32,8 @@ namespace pets_care.Controllers
                 if (client == null) return NotFound("Email ou senha inválidos");
 
                 var token = new TokenGenerator().Generate(client);
-                // client.Password = string.Empty;
+                
+                client.Password = string.Empty;
 
                 return Ok(new { user = client, token});
             }

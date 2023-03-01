@@ -25,7 +25,7 @@ namespace LifeBankAuth.Services
                         Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
                         SecurityAlgorithms.HmacSha256Signature
                 ),
-                Expires = DateTime.Now.AddDays(1)
+                Expires = DateTime.Now.AddHours(8)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -44,7 +44,9 @@ namespace LifeBankAuth.Services
 
             claims.AddClaim(new Claim("Id", client.ClientId.ToString()));
             claims.AddClaim(new Claim(ClaimTypes.Name, client.Name));
+            claims.AddClaim(new Claim(ClaimTypes.Email, client.Email));
             claims.AddClaim(new Claim(ClaimTypes.Role, client.Role));
+            claims.AddClaim(new Claim("Expiration Date:", DateTime.Now.AddHours(8).ToString()));
 
             return claims;
         }

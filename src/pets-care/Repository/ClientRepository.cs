@@ -91,7 +91,7 @@ namespace pets_care.Repository
             var client = await _context.Clients.FirstOrDefaultAsync(client => client.Email.Equals(loginRequest.Email));
             if(client == null) return null;
             
-            if(client?.Password == HashPassword(loginRequest.Password, client.CreatedAt)) return client;
+            if(client?.Password == HashPassword(loginRequest.Password, client!.CreatedAt)) return client;
 
             return null;
         }

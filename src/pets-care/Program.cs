@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -43,11 +44,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Adicionar POLICY CLAIMS BASED aqui!
+// Adicionar POLICY CLAIMS BASED aqui! Controller annotation => [Authorize(Policy = "Client")]
 // builder.Services.AddAuthorization(options =>
 // {
 //     options.AddPolicy("Client", 
-//         policy => policy.RequireClaim("ROLE", "USER"));
+//         policy => policy.RequireClaim(ClaimTypes.Role, "USER"));
+//     options.AddPolicy("Admin", 
+//         policy => policy.RequireClaim(ClaimTypes.Role, "ADMIN"));
 // });
 
 // DB

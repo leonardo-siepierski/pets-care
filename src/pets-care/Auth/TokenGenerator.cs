@@ -20,7 +20,11 @@ namespace LifeBankAuth.Services
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = AddClaims(client),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("3e35d94786e36fdc4560abf7e910c3a7")), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(
+                        Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("SECRET_KEY"))),
+                        SecurityAlgorithms.HmacSha256Signature
+                ),
                 Expires = DateTime.Now.AddDays(1)
             };
 

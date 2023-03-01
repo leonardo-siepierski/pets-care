@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using pets_care.Models;
 using pets_care.Repository;
@@ -12,6 +14,7 @@ namespace pets_care.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    // [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ClientController : Controller
     {
         private readonly IClientRepository _clientRepository;
@@ -40,6 +43,7 @@ namespace pets_care.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult<Client>> GetClientById(Guid id)
         {
             try
@@ -56,16 +60,16 @@ namespace pets_care.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string?>> CreateClient([FromBody] Client client)
+        public async Task<ActionResult<string?>> CreateClient([FromBody] ClientCreateRequest clientCreateRequest)
         {
             try
             {
-                if (client == null) return NotFound();
+                if (clientCreateRequest == null) return NotFound();
 
-                var viaCepServiceResponse = await _viaCepService.FindAdress(client.Cep);
+                var viaCepServiceResponse = await _viaCepService.FindAdress(clientCreateRequest.Cep);
                 if (viaCepServiceResponse == null || viaCepServiceResponse.ToString().Contains("erro")) return BadRequest("Cep not found");
 
-                var createdClient = await _clientRepository.CreateClient(client);
+                var createdClient = await _clientRepository.CreateClient(clientCreateRequest);
 
                 return CreatedAtAction(nameof(GetClientById), new { id = createdClient?.ClientId}, createdClient);
             }
@@ -76,16 +80,16 @@ namespace pets_care.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateClient(Guid id, [FromBody] ClientRequest clientRequest)
+        public async Task<ActionResult<string>> UpdateClient(Guid id, [FromBody] ClientUpdateRequest clientUpdateRequest)
         {
             try
             {
-                if (clientRequest == null) return NotFound();
+                if (clientUpdateRequest == null) return NotFound();
 
                 var clientFound = await _clientRepository.GetClientByID(id);
                 if(clientFound == null) return NotFound("Client not found");
 
-                _clientRepository.UpdateClient(clientFound, clientRequest);
+                _clientRepository.UpdateClient(clientFound, clientUpdateRequest);
 
                 return Ok("Client Updated!");
             }

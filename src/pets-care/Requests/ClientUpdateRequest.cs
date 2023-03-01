@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace pets_care.Requests
 {
-    public class ClientRequest
+    public class ClientUpdateRequest
     {
         [MinLength(6, ErrorMessage = "Name must have more than 6 digits")]
         public string Name { get; set; } = null!;

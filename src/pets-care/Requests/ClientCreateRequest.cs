@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace pets_care.Models
+namespace pets_care.Requests
 {
-    [Table("Client")]
-    public class Client
+    public class ClientCreateRequest
     {
-        [Key]
-        public Guid ClientId { get; set; }
-
         [MinLength(6, ErrorMessage = "Name must have more than 6 digits")]
         [Required(ErrorMessage = "Missing field Name")]
         public string Name { get; set; } = null!;
@@ -33,11 +28,5 @@ namespace pets_care.Models
         [MinLength(6, ErrorMessage= "Password must have more than 6 digits")]
         [Required(ErrorMessage = "Missing field Password")]
         public string Password { get; set; } = null!;
-
-        public string Role {get; set;} = null!;
-
-        public string CreatedAt { get; set; } = null!;
-
-        public string ModifiedAt { get; set; } = null!;
     }
 }

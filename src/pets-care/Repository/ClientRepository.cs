@@ -19,6 +19,8 @@ namespace pets_care.Repository
             _context = context;
         }
 
+        public ClientRepository(){}
+
         public async Task<IEnumerable<Client>> GetClients()
         {
             var clients = await _context.Clients.ToListAsync();
@@ -33,26 +35,32 @@ namespace pets_care.Repository
             return client;
         }
 
-        public async Task<Client?> CreateClient(Client client)
+        public async Task<Client?> CreateClient(ClientCreateRequest clientCreateRequest)
         {
-            var salt = DateTime.Now.ToString();
-            var passwordHashed = HashPassword(client.Password, salt);
+            var dateTime = DateTime.Now.ToString();
+            var passwordHashed = HashPassword(clientCreateRequest.Password, dateTime);
             
             var newClient = new Client
             {
                 ClientId = Guid.NewGuid(),
-                Name = client.Name,
-                Email = client.Email,
-                Cep = client.Cep,
-                Adress = client.Adress,
+                Name = clientCreateRequest.Name,
+                Email = clientCreateRequest.Email,
+                Cep = clientCreateRequest.Cep,
+                Adress = clientCreateRequest.Adress,
                 Password = passwordHashed,
-                CreatedAt = salt,
-                ModifiedAt = salt,
+                Role = "USER",
+                CreatedAt = dateTime,
+                ModifiedAt = dateTime
             };
 
             await _context.Clients.AddAsync(newClient);
 
             _context.SaveChanges();
+
+            newClient.Password = string.Empty;
+            newClient.Role = string.Empty;
+            newClient.CreatedAt = string.Empty;
+            newClient.ModifiedAt = string.Empty;
 
             return newClient;
         }
@@ -63,7 +71,7 @@ namespace pets_care.Repository
             _context.SaveChanges();
         }
 
-        public void UpdateClient(Client client, ClientRequest clientRequest)
+        public void UpdateClient(Client client, ClientUpdateRequest clientUpdateRequest)
         {
             // update all colunms
             // _context.Entry(client).State = EntityState.Modified;
@@ -71,12 +79,24 @@ namespace pets_care.Repository
             // update only the changed colunms
             _context.Clients.Attach(client);
 
-            client.Name = clientRequest.Name;
-            client.Email = clientRequest.Email;
+            client.Name = clientUpdateRequest.Name;
+            client.Email = clientUpdateRequest.Email;
             client.ModifiedAt = DateTime.Now.ToString();
 
             _context.SaveChanges();
         }
+
+        public async Task<Client?> AuthClientAsync(LoginRequest loginRequest)
+        {
+            var client = await _context.Clients.FirstOrDefaultAsync(client => client.Email.Equals(loginRequest.Email));
+            if(client == null) return null;
+            
+            if(client?.Password == HashPassword(loginRequest.Password, client.CreatedAt)) return client;
+
+            return null;
+        }
+
+
 
         public string HashPassword(string password, string salt)
         {
@@ -88,12 +108,6 @@ namespace pets_care.Repository
             return Convert.ToHexString(hashedPassword);
         }
 
-        // public void CheckIfExist()
-        // {
-        //     var client = await _context.Clients.FindAsync();
-
-        //     return client;
-        // }
 
         private bool disposed = false;
 

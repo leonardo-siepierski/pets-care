@@ -15,5 +15,6 @@ namespace pets_care.Repository
         void UpdateClient(Client client, ClientUpdateRequest clientUpdateRequest);
         void DeleteClient(Client client);
         Task<Client?> AuthClientAsync(LoginRequest loginRequest);
+        Task<bool> CheckClientEmail(string email);
   }
 }

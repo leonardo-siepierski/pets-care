@@ -35,6 +35,15 @@ namespace pets_care.Repository
             return client;
         }
 
+        public async Task<bool> CheckClientEmail(string email)
+        {
+            var clientExist = await _context.Clients.FirstOrDefaultAsync(client => client.Email.Equals(email));
+            
+            if(string.IsNullOrEmpty(clientExist?.ToString())) return false;
+
+            return true;
+        }
+
         public async Task<Client?> CreateClient(ClientCreateRequest clientCreateRequest)
         {
             var dateTime = DateTime.Now.ToString();
@@ -96,8 +105,6 @@ namespace pets_care.Repository
             return null;
         }
 
-
-
         public string HashPassword(string password, string salt)
         {
             SHA256 hash = SHA256.Create();
@@ -128,5 +135,6 @@ namespace pets_care.Repository
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-    }
+
+  }
 }

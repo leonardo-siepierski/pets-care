@@ -66,6 +66,9 @@ namespace pets_care.Controllers
             {
                 if (clientCreateRequest == null) return NotFound();
 
+                var clientEmailAlreadyExist = await _clientRepository.CheckClientEmail(clientCreateRequest.Email);
+                if(clientEmailAlreadyExist) return BadRequest("Email already in use!");
+
                 var viaCepServiceResponse = await _viaCepService.FindAdress(clientCreateRequest.Cep);
                 if (viaCepServiceResponse == null || viaCepServiceResponse.ToString().Contains("erro")) return BadRequest("Cep not found");
 

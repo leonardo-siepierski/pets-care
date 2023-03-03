@@ -59,6 +59,25 @@ namespace pets_care.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("qrcode/{id}")]
+        public async Task<ActionResult> GetClientByQRCode(Guid id)
+        {
+            try
+            {
+                var client = await _clientRepository.GetClientByID(id);
+                if (client == null) return NotFound("Client not found");
+
+                var qrCode = QrCodeService.GenerateByteArray($"https://localhost:7133/client/qrcode/{client.ClientId}");
+
+                return File(qrCode, "image/jpeg");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult<string?>> CreateClient([FromBody] ClientCreateRequest clientCreateRequest)
         {

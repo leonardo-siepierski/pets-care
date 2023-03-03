@@ -5,6 +5,7 @@ namespace pets_care.Services
 {
   public class QrCodeService
     {
+
         public static Bitmap GenerateImage(string url)
         {
             var qrGenerator = new QRCodeGenerator();

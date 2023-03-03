@@ -36,8 +36,10 @@ namespace pets_care.Models
 
         public string Role {get; set;} = null!;
 
-        public string CreatedAt { get; set; } = null!;
+        [DataType(DataType.DateTime)]
+        public DateTime CreatedAt { get; set; }
 
-        public string ModifiedAt { get; set; } = null!;
+        [DataType(DataType.DateTime)]
+        public DateTime ModifiedAt { get; set; }
     }
 }

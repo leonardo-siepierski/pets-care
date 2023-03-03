@@ -65,12 +65,14 @@ using (var db = new PetCareContext())
     // Código executado no banco de dados aqui
     db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
+    var cultureInfo = new CultureInfo("pt-BR");
 
     var clientRepository = new ClientRepository();
-    var salt = DateTime.Now.ToString();
+    var salt = DateTime.Now;
+    Console.WriteLine(salt);
 
-    var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto Andrade", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = "04321020", Password = clientRepository.HashPassword("senha1",$"{salt}"), Role = "USER" ,CreatedAt = salt, ModifiedAt = salt };
-    var client2 = new Client(){ClientId = Guid.NewGuid() , Name = "Joana Martins", Adress = "Rua das flores", Email = "joana@gmail.com", Cep = "14730000", Password = clientRepository.HashPassword("senha2",$"{salt}"), Role = "USER",CreatedAt = salt, ModifiedAt = salt };
+    var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto Andrade", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = "04321020", Password = clientRepository.HashPassword("senha1", $"{salt}"), Role = "USER" , CreatedAt = salt, ModifiedAt = salt };
+    var client2 = new Client(){ClientId = Guid.NewGuid() , Name = "Joana Martins", Adress = "Rua das flores", Email = "joana@gmail.com", Cep = "14730000", Password = clientRepository.HashPassword("senha2", $"{salt}"), Role = "USER", CreatedAt = salt, ModifiedAt = salt };
     db.Clients.Add(client);
     db.Clients.Add(client2);
     db.SaveChanges();
@@ -100,5 +102,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// culture
+// var cultureInfo = new CultureInfo("pt-BR");
+// CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+// CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+// Console.WriteLine("First day of the: " + cultureInfo.DateTimeFormat.FirstDayOfWeek.ToString());
+// Console.WriteLine("First calendar week starts with: " + cultureInfo.DateTimeFormat.CalendarWeekRule.ToString());
+// Console.WriteLine("First calendar week starts with: " + DateTime.Now);
 
 app.Run();

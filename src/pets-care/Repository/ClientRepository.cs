@@ -46,8 +46,8 @@ namespace pets_care.Repository
 
         public async Task<Client?> CreateClient(ClientCreateRequest clientCreateRequest)
         {
-            var dateTime = DateTime.Now.ToString();
-            var passwordHashed = HashPassword(clientCreateRequest.Password, dateTime);
+            var dateTime = DateTime.Now;
+            var passwordHashed = HashPassword(clientCreateRequest.Password, dateTime.ToString());
             
             var newClient = new Client
             {
@@ -68,8 +68,8 @@ namespace pets_care.Repository
 
             newClient.Password = string.Empty;
             newClient.Role = string.Empty;
-            newClient.CreatedAt = string.Empty;
-            newClient.ModifiedAt = string.Empty;
+            newClient.CreatedAt = DateTime.MinValue;
+            newClient.ModifiedAt = DateTime.MinValue;
 
             return newClient;
         }
@@ -90,7 +90,7 @@ namespace pets_care.Repository
 
             client.Name = clientUpdateRequest.Name;
             client.Email = clientUpdateRequest.Email;
-            client.ModifiedAt = DateTime.Now.ToString();
+            client.ModifiedAt = DateTime.Now;
 
             _context.SaveChanges();
         }
@@ -100,7 +100,7 @@ namespace pets_care.Repository
             var client = await _context.Clients.FirstOrDefaultAsync(client => client.Email.Equals(loginRequest.Email));
             if(client == null) return null;
             
-            if(client?.Password == HashPassword(loginRequest.Password, client!.CreatedAt)) return client;
+            if(client?.Password == HashPassword(loginRequest.Password, client!.CreatedAt.ToString())) return client;
 
             return null;
         }

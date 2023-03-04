@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using pets_care.Models;
 using pets_care.Repository;
 using pets_care.Requests;
@@ -15,7 +16,7 @@ namespace pets_care.Controllers
     [ApiController]
     [Route("[controller]")]
     // [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class ClientController : Controller
+    public class ClientController : ControllerBase
     {
         private readonly IClientRepository _clientRepository;
         private readonly IViaCepService _viaCepService;
@@ -43,12 +44,12 @@ namespace pets_care.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "USER")]
+        // [Authorize(Roles = "USER")]
         public async Task<ActionResult<Client>> GetClientById(Guid id)
         {
             try
             {
-                var client = await _clientRepository.GetClientByID(id);
+                var client = await _clientRepository.GetClientById(id);
                 if (client == null) return NotFound("Client not found");
 
                 return Ok(client);
@@ -61,14 +62,17 @@ namespace pets_care.Controllers
 
         [HttpGet]
         [Route("qrcode/{id}")]
-        public async Task<ActionResult> GetClientByQRCode(Guid id)
+        public async Task<ActionResult<dynamic>> GetClientByQRCode(Guid id)
         {
             try
             {
-                var client = await _clientRepository.GetClientByID(id);
+                var client = await _clientRepository.GetClientById(id);
+
                 if (client == null) return NotFound("Client not found");
 
-                var qrCode = QrCodeService.GenerateByteArray($"https://localhost:7133/client/qrcode/{client.ClientId}");
+                var clientJson = JsonConvert.SerializeObject(client);
+
+                var qrCode = QrCodeService.GenerateByteArray(clientJson);
 
                 return File(qrCode, "image/jpeg");
             }
@@ -79,7 +83,7 @@ namespace pets_care.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string?>> CreateClient([FromBody] ClientCreateRequest clientCreateRequest)
+        public async Task<ActionResult<Client>> CreateClient([FromBody] ClientCreateRequest clientCreateRequest)
         {
             try
             {
@@ -102,16 +106,16 @@ namespace pets_care.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateClient(Guid id, [FromBody] ClientUpdateRequest clientUpdateRequest)
+        public async Task<ActionResult<dynamic>> UpdateClient(Guid id, [FromBody] ClientUpdateRequest clientUpdateRequest)
         {
             try
             {
                 if (clientUpdateRequest == null) return NotFound();
 
-                var clientFound = await _clientRepository.GetClientByID(id);
+                var clientFound = await _clientRepository.GetClientById(id);
                 if(clientFound == null) return NotFound("Client not found");
 
-                _clientRepository.UpdateClient(clientFound, clientUpdateRequest);
+                var result = _clientRepository.UpdateClient(clientFound, clientUpdateRequest);
 
                 return Ok("Client Updated!");
             }
@@ -122,11 +126,11 @@ namespace pets_care.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<string>> DeleteClient(Guid id)
+        public async Task<ActionResult<dynamic>> DeleteClient(Guid id)
         {
             try
             {
-                var clientFound = await _clientRepository.GetClientByID(id);
+                var clientFound = await _clientRepository.GetClientById(id);
                 if(clientFound == null) return NotFound("Client not found");
 
                 _clientRepository.DeleteClient(clientFound);

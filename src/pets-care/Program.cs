@@ -112,3 +112,5 @@ app.MapControllers();
 // Console.WriteLine("First calendar week starts with: " + DateTime.Now);
 
 app.Run();
+
+public partial class Program { }

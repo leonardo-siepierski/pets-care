@@ -19,7 +19,9 @@ namespace pets_care.Repository
             _context = context;
         }
 
-        public ClientRepository(){}
+        public ClientRepository()
+        {
+        }
 
         public async Task<IEnumerable<Client>> GetClients()
         {
@@ -28,7 +30,7 @@ namespace pets_care.Repository
             return clients;
         }
 
-        public async Task<Client?> GetClientByID(Guid clientId)
+        public async Task<Client?> GetClientById(Guid clientId)
         {
             var client = await _context.Clients.FindAsync(clientId);
 
@@ -80,7 +82,7 @@ namespace pets_care.Repository
             _context.SaveChanges();
         }
 
-        public void UpdateClient(Client client, ClientUpdateRequest clientUpdateRequest)
+        public bool UpdateClient(Client client, ClientUpdateRequest clientUpdateRequest)
         {
             // update all colunms
             // _context.Entry(client).State = EntityState.Modified;
@@ -93,6 +95,8 @@ namespace pets_care.Repository
             client.ModifiedAt = DateTime.Now;
 
             _context.SaveChanges();
+
+            return true;
         }
 
         public async Task<Client?> AuthClientAsync(LoginRequest loginRequest)

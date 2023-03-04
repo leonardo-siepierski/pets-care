@@ -10,9 +10,9 @@ namespace pets_care.Repository
     public interface IClientRepository : IDisposable
     {
         Task<IEnumerable<Client>> GetClients();
-        Task<Client?> GetClientByID(Guid clientId);
+        Task<Client?> GetClientById(Guid clientId);
         Task<Client?> CreateClient(ClientCreateRequest clientCreateRequest);
-        void UpdateClient(Client client, ClientUpdateRequest clientUpdateRequest);
+        bool UpdateClient(Client client, ClientUpdateRequest clientUpdateRequest);
         void DeleteClient(Client client);
         Task<Client?> AuthClientAsync(LoginRequest loginRequest);
         Task<bool> CheckClientEmail(string email);

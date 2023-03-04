@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LifeBankAuth.Services;
 using Microsoft.AspNetCore.Mvc;
+using pets_care.Auth;
 using pets_care.Models;
 using pets_care.Repository;
 using pets_care.Requests;
@@ -12,14 +12,16 @@ namespace pets_care.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoginController : Controller
+    public class LoginController : ControllerBase
     {
         private readonly IClientRepository _clientRepository;
+        private readonly ITokenGenerator _tokenGenerator;
 
 
-        public LoginController(IClientRepository clientRepository)
+        public LoginController(IClientRepository clientRepository, ITokenGenerator tokenGenerator)
         {
             _clientRepository = clientRepository;
+            _tokenGenerator = tokenGenerator;
         }
 
         [HttpPost]
@@ -31,7 +33,7 @@ namespace pets_care.Controllers
 
                 if (client == null) return NotFound("Email ou senha inválidos");
 
-                var token = new TokenGenerator().Generate(client);
+                var token = _tokenGenerator.Generate(client);
                 
                 client.Password = string.Empty;
 

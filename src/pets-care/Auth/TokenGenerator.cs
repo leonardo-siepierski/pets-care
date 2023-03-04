@@ -5,9 +5,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using pets_care.Models;
 
-namespace LifeBankAuth.Services
+namespace pets_care.Auth
 {
-    public class TokenGenerator
+    public class TokenGenerator : ITokenGenerator
     {
         /// <summary>
         /// This function is to Generate Token 
@@ -38,7 +38,7 @@ namespace LifeBankAuth.Services
         /// </summary>
         /// <param name="client"> A client object value</param>
         /// <returns>Returns an object of type ClaimsIdentity</returns>
-        private ClaimsIdentity AddClaims(Client client)
+        public ClaimsIdentity AddClaims(Client client)
         {
             var claims = new ClaimsIdentity();
 

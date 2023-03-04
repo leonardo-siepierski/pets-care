@@ -44,7 +44,7 @@ namespace pets_care.Controllers
         }
 
         [HttpGet("{id}")]
-        // [Authorize(Roles = "USER")]
+        [Authorize(Roles = "USER")]
         public async Task<ActionResult<Client>> GetClientById(Guid id)
         {
             try

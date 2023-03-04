@@ -21,11 +21,6 @@ namespace pets_care.Test;
         private Fixture _fixture;
         private ClientController _controller;
 
-        // public ClientControllerTest()
-        // {
-        //     _repositoryMock = A.Fake<IClientRepository>();
-        //     _viaCepMock = A.Fake<ViaCepService>();
-        // }
         public ClientControllerTest()
         {
             _fixture = new Fixture();

@@ -1,8 +1,8 @@
 using System.Globalization;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using pets_care.Auth;
 using pets_care.Models;
 using pets_care.Repository;
 using pets_care.Services;
@@ -56,6 +56,7 @@ builder.Services.AddAuthentication(options =>
 // DB
 builder.Services.AddDbContext<PetCareContext>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 
 // ENVIROMENT SET
 DotNetEnv.Env.Load();

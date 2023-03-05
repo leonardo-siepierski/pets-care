@@ -13,6 +13,7 @@ namespace pets_care.Models
         public PetCareContext() {}
 
         public DbSet<Client> Clients { get; set; } = null!;
+        public DbSet<Pet> Pets { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

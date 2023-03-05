@@ -88,6 +88,7 @@ using (var db = new PetCareContext())
 
 // HTTPCLIENTS
 builder.Services.AddHttpClient<IViaCepService, ViaCepService>();
+builder.Services.AddHttpClient<INominatimService, NominatimService>();
 
 
 var app = builder.Build();

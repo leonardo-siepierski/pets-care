@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace pets_care.Requests
 {
-    public class PetUpdateRequest
+    public class PetUpdateLocationRequest
     {
         public string? Longitude {get; set;}
 

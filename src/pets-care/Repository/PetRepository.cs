@@ -72,9 +72,15 @@ namespace pets_care.Repository
             return newPet;
         }
 
-        public void UpdatePet(Pet pet, PetUpdateRequest petUpdateRequest)
+        public void UpdatePetLocation(Pet pet, PetUpdateLocationRequest petUpdateLocationRequest)
         {
+            _context.Pets.Attach(pet);
 
+            pet.Latitude = petUpdateLocationRequest.Latitude;
+            pet.Longitude = petUpdateLocationRequest.Longitude;
+            pet.ModifiedAt = DateTime.Now;
+
+            _context.SaveChanges();
         }
 
         private bool disposed = false;

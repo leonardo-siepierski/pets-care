@@ -13,7 +13,7 @@ namespace pets_care.Repository
         Task<Pet?> GetPetById(Guid petId);
         Task<IEnumerable<Pet>> GetPetsByClientId(Guid clientId);
         Task<Pet?> CreatePet(PetCreateRequest petCreateRequest, Guid clientId);
-        void UpdatePet(Pet pet, PetUpdateRequest petUpdateRequest);
+        void UpdatePetLocation(Pet pet, PetUpdateLocationRequest petUpdateLocationRequest);
         // void DeletePet(Pet client);
   }
 }

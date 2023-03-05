@@ -11,6 +11,7 @@ using pets_care.Auth;
 using pets_care.Models;
 using pets_care.Repository;
 using pets_care.Requests;
+using pets_care.Services;
 
 namespace pets_care.Controllers
 {
@@ -20,11 +21,13 @@ namespace pets_care.Controllers
     {
         private readonly IPetRepository _petRepository;
         private readonly ITokenGenerator _tokenGenerator;
+        private readonly INominatimService _nominatimService;
 
-        public PetController(IPetRepository petRepository, ITokenGenerator tokenGenerator)
+        public PetController(IPetRepository petRepository, ITokenGenerator tokenGenerator, INominatimService nominatimService)
         {
             _petRepository = petRepository;
             _tokenGenerator = tokenGenerator;
+            _nominatimService = nominatimService;
         }
 
 
@@ -127,6 +130,30 @@ namespace pets_care.Controllers
                 var createdPet = await _petRepository.CreatePet(petCreateRequest, Guid.Parse(clientId));
 
                 return CreatedAtAction(nameof(GetPetById), new { id = createdPet?.PetId}, createdPet);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<dynamic>> UpdatePetLocation(Guid id, [FromBody] PetUpdateLocationRequest petUpdateLocationRequest)
+        {
+            try
+            {
+                if (petUpdateLocationRequest == null) return NotFound();
+
+                var petFound = await _petRepository.GetPetById(id);
+                if(petFound == null) return NotFound("Pet not found");
+
+
+                var adress = await _nominatimService.FindAdress(petUpdateLocationRequest);
+                // if(adress == null) return BadRequest("Invalid Coorinates");
+
+                _petRepository.UpdatePetLocation(petFound, petUpdateLocationRequest);
+
+                return Ok(new {Status = "Pet Location Updated!" , adress});
             }
             catch (Exception ex)
             {

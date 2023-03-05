@@ -24,7 +24,6 @@ builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
 ));
 
 
-
 // Auth Config
 builder.Services.AddAuthentication(options =>
 {
@@ -56,6 +55,7 @@ builder.Services.AddAuthentication(options =>
 // DB
 builder.Services.AddDbContext<PetCareContext>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IPetRepository, PetRepository>();
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 
 // ENVIROMENT SET
@@ -74,8 +74,14 @@ using (var db = new PetCareContext())
 
     var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto Andrade", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = "04321020", Password = clientRepository.HashPassword("senha1", $"{salt}"), Role = "USER" , CreatedAt = salt, ModifiedAt = salt };
     var client2 = new Client(){ClientId = Guid.NewGuid() , Name = "Joana Martins", Adress = "Rua das flores", Email = "joana@gmail.com", Cep = "14730000", Password = clientRepository.HashPassword("senha2", $"{salt}"), Role = "USER", CreatedAt = salt, ModifiedAt = salt };
+    var pet = new Pet(){PetId = Guid.NewGuid(), Name = "Reks" , Age = 3, BirthDay = "27/02", Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Pinscher", Size = "Small"};
+    var pet2 = new Pet(){PetId = Guid.NewGuid(), Name = "Dante" , Age = 7, BirthDay = "13/04", Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Beagle", Size = "Medium"};
+    var pet3 = new Pet(){PetId = Guid.NewGuid(), Name = "Ted" , Age = 8, BirthDay = "08/12", Client = client2, ClientId = client2.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="German Shepherd ", Size = "Big"};
     db.Clients.Add(client);
     db.Clients.Add(client2);
+    db.Pets.Add(pet);
+    db.Pets.Add(pet2);
+    db.Pets.Add(pet3);
     db.SaveChanges();
 }
 
@@ -103,14 +109,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-// culture
-// var cultureInfo = new CultureInfo("pt-BR");
-// CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-// CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-// Console.WriteLine("First day of the: " + cultureInfo.DateTimeFormat.FirstDayOfWeek.ToString());
-// Console.WriteLine("First calendar week starts with: " + cultureInfo.DateTimeFormat.CalendarWeekRule.ToString());
-// Console.WriteLine("First calendar week starts with: " + DateTime.Now);
 
 app.Run();
 

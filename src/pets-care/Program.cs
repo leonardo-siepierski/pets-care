@@ -74,9 +74,9 @@ using (var db = new PetCareContext())
 
     var client = new Client(){ClientId = Guid.NewGuid() , Name = "Beto Andrade", Adress = "Rua das ediondas", Email = "beto@gmail.com", Cep = "04321020", Password = clientRepository.HashPassword("senha1", $"{salt}"), Role = "USER" , CreatedAt = salt, ModifiedAt = salt };
     var client2 = new Client(){ClientId = Guid.NewGuid() , Name = "Joana Martins", Adress = "Rua das flores", Email = "joana@gmail.com", Cep = "14730000", Password = clientRepository.HashPassword("senha2", $"{salt}"), Role = "USER", CreatedAt = salt, ModifiedAt = salt };
-    var pet = new Pet(){PetId = Guid.NewGuid(), Name = "Reks" , Age = 3, BirthDay = "27/02", Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Pinscher", Size = "Small"};
-    var pet2 = new Pet(){PetId = Guid.NewGuid(), Name = "Dante" , Age = 7, BirthDay = "13/04", Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Beagle", Size = "Medium"};
-    var pet3 = new Pet(){PetId = Guid.NewGuid(), Name = "Ted" , Age = 8, BirthDay = "08/12", Client = client2, ClientId = client2.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="German Shepherd ", Size = "Big"};
+    var pet = new Pet(){PetId = Guid.NewGuid(), Name = "Reks" , Age = 8, BirthDate = new DateTime(2015, 05, 15, 03, 24, 21), Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Pinscher", Size = "Small"};
+    var pet2 = new Pet(){PetId = Guid.NewGuid(), Name = "Dante" , Age = 6, BirthDate = new DateTime(2017, 09, 04, 03, 24, 21), Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Beagle", Size = "Medium"};
+    var pet3 = new Pet(){PetId = Guid.NewGuid(), Name = "Ted" , Age = 5, BirthDate = new DateTime(2018, 12, 25, 03, 24, 21), Client = client2, ClientId = client2.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="German Shepherd ", Size = "Big"};
     db.Clients.Add(client);
     db.Clients.Add(client2);
     db.Pets.Add(pet);

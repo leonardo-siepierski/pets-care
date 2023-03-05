@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace pets_care.Models
+namespace pets_care.Requests
 {
-    [Table("Pet")]
-    public class Pet
+    public class PetCreateRequest
     {
-        [Key]
-        public Guid PetId { get; set; }
-
         [MinLength(2, ErrorMessage = "Name must have more than 2 digits")]
         [Required(ErrorMessage = "Missing field Name")]
         public string Name { get; set; } = null!;
@@ -27,21 +22,5 @@ namespace pets_care.Models
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "Missing field BirthDate")]
         public DateTime BirthDate { get; set; }
-
-        public int Age { get; set; }
-
-        public string? Longitude {get; set;}
-
-        public string? Latitude {get; set;}
-
-        [DataType(DataType.DateTime)]
-        public DateTime CreatedAt { get; set; }
-
-        [DataType(DataType.DateTime)]
-        public DateTime ModifiedAt { get; set; }
-
-        [ForeignKey("ClientId")]
-        public virtual Client Client { get; set; }
-        public Guid ClientId { get; set; }
     }
 }

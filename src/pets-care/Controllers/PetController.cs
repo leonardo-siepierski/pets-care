@@ -10,6 +10,7 @@ using Microsoft.Net.Http.Headers;
 using pets_care.Auth;
 using pets_care.Models;
 using pets_care.Repository;
+using pets_care.Requests;
 
 namespace pets_care.Controllers
 {
@@ -98,6 +99,34 @@ namespace pets_care.Controllers
                 if(!userId.ToString().Contains(id.ToString())) return BadRequest("Wrong Client");
 
                 return Ok(clientPets);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Pet>> CreatePet([FromBody] PetCreateRequest petCreateRequest)
+        {
+            try
+            {
+                if (petCreateRequest == null) return NotFound();
+
+                // GET TOKEN FROM Bearer Token Authorization
+                var accessToken = Request.Headers[HeaderNames.Authorization];
+                var formatJwt = accessToken.ToString().Replace("Bearer ", "");
+                var token = _tokenGenerator.GetName(formatJwt);
+
+                // GET USER ID FROM CLAIM
+                var clientId = token.Claims.First(c => c.Type == "Id").ToString().Replace("Id: ", "");
+
+                Console.WriteLine("userid:"+ clientId);
+
+                var createdPet = await _petRepository.CreatePet(petCreateRequest, Guid.Parse(clientId));
+
+                return CreatedAtAction(nameof(GetPetById), new { id = createdPet?.PetId}, createdPet);
             }
             catch (Exception ex)
             {

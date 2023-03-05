@@ -44,6 +44,39 @@ namespace pets_care.Repository
             return clientPets;
         }
 
+        public async Task<Pet?> CreatePet(PetCreateRequest petCreateRequest, Guid clientId)
+        {
+            var dateTime = DateTime.Now;
+            var actualAge = dateTime.Date.Year - petCreateRequest.BirthDate.Year;
+            
+            var newPet = new Pet
+            {
+                PetId = Guid.NewGuid(),
+                Name = petCreateRequest.Name,
+                Age = actualAge,
+                BirthDate = petCreateRequest.BirthDate,
+                Breed = petCreateRequest.Breed,
+                Size = petCreateRequest.Size,
+                ClientId = clientId,
+                CreatedAt = dateTime,
+                ModifiedAt = dateTime
+            };
+
+            await _context.Pets.AddAsync(newPet);
+
+            _context.SaveChanges();
+
+            newPet.CreatedAt = DateTime.MinValue;
+            newPet.ModifiedAt = DateTime.MinValue;
+
+            return newPet;
+        }
+
+        public void UpdatePet(Pet pet, PetUpdateRequest petUpdateRequest)
+        {
+
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

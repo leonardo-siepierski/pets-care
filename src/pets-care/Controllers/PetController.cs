@@ -162,7 +162,7 @@ namespace pets_care.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<dynamic>> DeleteClient(Guid id)
+        public async Task<ActionResult<dynamic>> DeletePet(Guid id)
         {
             try
             {

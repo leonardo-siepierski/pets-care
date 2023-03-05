@@ -453,5 +453,6 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 src/pets-care/.env
-src/pets-care/coveragereport
 src/coveragereport
+src/pets-care/coveragereport
+src/pets-care.Test/coveragereport

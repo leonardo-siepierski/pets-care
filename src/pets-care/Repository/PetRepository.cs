@@ -30,6 +30,13 @@ namespace pets_care.Repository
             return pets;
         }
 
+        public async Task<Pet?> GetPetById(Guid petId)
+        {
+            var pet = await _context.Pets.FindAsync(petId);
+            
+            return pet;
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

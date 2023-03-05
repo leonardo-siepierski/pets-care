@@ -42,6 +42,6 @@ namespace pets_care.Models
         [DataType(DataType.DateTime)]
         public DateTime ModifiedAt { get; set; }
 
-        public ICollection<Pet> Pets { get; set; }
+        public virtual ICollection<Pet> Pets { get; set; }
     }
 }

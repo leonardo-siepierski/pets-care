@@ -33,6 +33,13 @@ namespace pets_care.Auth
             return tokenHandler.WriteToken(token);
         }
 
+        public JwtSecurityToken GetName(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var payload = handler.ReadJwtToken(token);
+            return payload;
+        }
+
         /// <summary>
         /// Function that adds the claims to the token
         /// </summary>

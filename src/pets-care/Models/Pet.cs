@@ -39,7 +39,8 @@ namespace pets_care.Models
         [DataType(DataType.DateTime)]
         public DateTime ModifiedAt { get; set; }
 
+        [ForeignKey("ClientId")]
+        public virtual Client Client { get; set; }
         public Guid ClientId { get; set; }
-        public Client Client { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace pets_care.Repository
     public interface IPetRepository : IDisposable
     {
         Task<IEnumerable<Pet>> GetPets();
-        // Task<Pet?> GetPetById(Guid clientId);
+        Task<Pet?> GetPetById(Guid petId);
         // Task<Pet?> CreatePet(ClientCreateRequest clientCreateRequest);
         // bool UpdatePet(Pet client, ClientUpdateRequest clientUpdateRequest);
         // void DeletePet(Pet client);

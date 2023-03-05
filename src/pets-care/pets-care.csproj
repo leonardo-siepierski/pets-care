@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="DotNetEnv" Version="2.5.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />
+    <PackageReference Include="Nominatim.API" Version="2.0.0" />
     <PackageReference Include="QRCoder" Version="1.4.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />

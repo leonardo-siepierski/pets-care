@@ -31,6 +31,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Get_Clients_ReturnsOk()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var clients = _fixture.CreateMany<Client>(3).ToList();
             _repositoryMock.Setup(repo => repo.GetClients()).ReturnsAsync(clients);
 
@@ -61,6 +62,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Get_ClientById_ReturnsOk()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var client = _fixture.Create<Client>();
             _repositoryMock.Setup(repo => repo.GetClientById(client.ClientId)).ReturnsAsync(client);
 
@@ -92,6 +94,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Post_CreateClient_ReturnsOk()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var clientRequest = _fixture.Create<ClientCreateRequest>();
             var client = _fixture.Create<Client>();
 
@@ -129,6 +132,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Post_CreateClient_ThrowsException()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var clientRequest = _fixture.Create<ClientCreateRequest>();
             var client = _fixture.Create<Client>();
 
@@ -164,6 +168,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Put_UpdateClient_ReturnsOk()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var client = _fixture.Create<Client>();
             var clientRequest = _fixture.Create<ClientUpdateRequest>();
             _repositoryMock.Setup(repo => repo.GetClientById(client.ClientId)).ReturnsAsync(client);
@@ -182,6 +187,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Put_UpdateClient_ThrowsExceptionNotFound()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var client = _fixture.Create<Client>();
             var clientRequest = _fixture.Create<ClientCreateRequest>();
             var clientUpdateRequest = _fixture.Create<ClientUpdateRequest>();
@@ -200,6 +206,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Delete_DeleteClient_ReturnsOk()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var client = _fixture.Create<Client>();
             var clientCreateRequest = _fixture.Create<ClientCreateRequest>();
 
@@ -219,6 +226,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Delete_DeleteClient_TrhowsException()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var client = _fixture.Create<Client>();
             _repositoryMock.Setup(repo => repo.DeleteClient(client));
 

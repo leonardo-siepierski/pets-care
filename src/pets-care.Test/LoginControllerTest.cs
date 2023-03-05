@@ -32,6 +32,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Post_Login_ReturnsOk()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var cloginRequest = _fixture.Create<LoginRequest>();
             var client = _fixture.Create<Client>();
             var token = _fixture.Create<string>();
@@ -52,6 +53,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Post_Login_ThrowsExceptionNotFound()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var cloginRequest = _fixture.Create<LoginRequest>();
             var client = _fixture.Create<Client>();
             _repositoryMock.Setup(repo => repo.AuthClientAsync(null)).ReturnsAsync(client);
@@ -69,6 +71,7 @@ namespace pets_care.Test;
         [Fact]
         public async Task Post_Login_ThrowsExceptionBadRequest()
         {
+            _fixture.Customize<Client>(o => o.Without(foo => foo.Pets));
             var cloginRequest = _fixture.Create<LoginRequest>();
             var client = _fixture.Create<Client>();
             _repositoryMock.Setup(repo => repo.AuthClientAsync(null)).Throws(new Exception());

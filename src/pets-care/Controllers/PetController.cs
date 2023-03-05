@@ -160,5 +160,23 @@ namespace pets_care.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<dynamic>> DeleteClient(Guid id)
+        {
+            try
+            {
+                var petFound = await _petRepository.GetPetById(id);
+                if(petFound == null) return NotFound("Pet not found");
+
+                _petRepository.DeletePet(petFound);
+
+                return Ok("Pet Deleted!");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

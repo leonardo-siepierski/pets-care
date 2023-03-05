@@ -83,6 +83,12 @@ namespace pets_care.Repository
             _context.SaveChanges();
         }
 
+        public void DeletePet(Pet pet)
+        {
+            _context.Pets.Remove(pet);
+            _context.SaveChanges();
+        }
+
         private bool disposed = false;
 
         protected virtual void Dispose(bool disposing)

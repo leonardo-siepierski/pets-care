@@ -61,6 +61,26 @@ namespace pets_care.Controllers
         }
 
         [HttpGet]
+        [Route("qrcode/{id}/string")]
+        public async Task<ActionResult<dynamic?>> GetClientByQRCodeString(Guid id)
+        {
+            try
+            {
+                var client = await _clientRepository.GetClientById(id);
+
+                if (client == null) return NotFound("Client not found");
+
+                var clientJson = JsonConvert.SerializeObject(client);
+
+                return clientJson.ToString();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("qrcode/{id}")]
         public async Task<ActionResult<dynamic>> GetClientByQRCode(Guid id)
         {

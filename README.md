@@ -36,14 +36,14 @@ Para utilizar o projeto, basta clonar o repositório e executar o seguinte coman
 
 #### Adiciona um cliente
 ```
-  POST /client/
+  POST /client
 ```
 Passando no body um json no formato:
 ```json
     {
         "name": "string",
         "email": "user@example.com",
-        "cep": "04321020",
+        "cep": "68035150",
         "adress": "string",
         "password": "string",
         "confirmpassword": "string"
@@ -101,7 +101,7 @@ Passando no body um json no formato:
 
 #### Adiciona um pet
 ```
-  POST /pet/
+  POST /pet
 ```
 Passando no body um json no formato:
 ```json

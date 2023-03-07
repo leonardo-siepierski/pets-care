@@ -109,7 +109,7 @@ Passando no body um json no formato:
         "name": "Napoleao",
         "size": "Medium",
         "breed": "Pinscher",
-        "birthdate": "2023-003-001"
+        "birthdate": "2023-03-01"
     }
 ```
 

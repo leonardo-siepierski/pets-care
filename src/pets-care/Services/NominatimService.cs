@@ -24,7 +24,10 @@ namespace pets_care.Services
             Console.WriteLine(location.Longitude);
             Console.WriteLine(location.Latitude);
             // var productValue = new ProductInfoHeaderValue("user_agent", "");
-            // _client.DefaultRequestHeaders.UserAgent.Add(productValue);
+            var productValue = new ProductInfoHeaderValue("GeoPets", "1.0");
+            var commentValue = new ProductInfoHeaderValue("(+https://localhost:7133/pet)");
+            _client.DefaultRequestHeaders.UserAgent.Add(productValue);
+            _client.DefaultRequestHeaders.UserAgent.Add(commentValue);
             var response = await _client.GetStringAsync("");
 
             // if(!response.IsSuccessStatusCode) return default;

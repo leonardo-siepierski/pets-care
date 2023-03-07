@@ -76,7 +76,7 @@ using (var db = new PetCareContext())
     var client2 = new Client(){ClientId = Guid.NewGuid() , Name = "Joana Martins", Adress = "Rua das flores", Email = "joana@gmail.com", Cep = "14730000", Password = clientRepository.HashPassword("senha2", $"{salt}"), Role = "USER", CreatedAt = salt, ModifiedAt = salt };
     var pet = new Pet(){PetId = Guid.NewGuid(), Name = "Reks" , Age = 8, BirthDate = new DateTime(2015, 05, 15, 03, 24, 21), Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Pinscher", Size = "Small"};
     var pet2 = new Pet(){PetId = Guid.NewGuid(), Name = "Dante" , Age = 6, BirthDate = new DateTime(2017, 09, 04, 03, 24, 21), Client = client, ClientId = client.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Beagle", Size = "Medium"};
-    var pet3 = new Pet(){PetId = Guid.NewGuid(), Name = "Ted" , Age = 5, BirthDate = new DateTime(2018, 12, 25, 03, 24, 21), Client = client2, ClientId = client2.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Hound", Size = "Big"};
+    var pet3 = new Pet(){PetId = Guid.NewGuid(), Name = "Ted" , Age = 5, BirthDate = new DateTime(2018, 12, 25, 03, 24, 21), Client = client2, ClientId = client2.ClientId, CreatedAt = salt, ModifiedAt = salt, Longitude = "", Latitude = "", Breed ="Hound", Size = "Large"};
     db.Clients.Add(client);
     db.Clients.Add(client2);
     db.Pets.Add(pet);

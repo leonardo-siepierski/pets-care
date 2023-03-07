@@ -6,6 +6,7 @@ using System.Web.Http.Cors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using pets_care.Models;
 using pets_care.Repository;
 using pets_care.Requests;
@@ -69,8 +70,9 @@ namespace pets_care.Controllers
                 var client = await _clientRepository.GetClientById(id);
 
                 if (client == null) return NotFound("Client not found");
-
-                var clientJson = JsonConvert.SerializeObject(client);
+                
+                var clientResponse = new ClientResponse(client);
+                var clientJson = JsonConvert.SerializeObject(clientResponse);
 
                 return clientJson.ToString();
             }
@@ -89,8 +91,9 @@ namespace pets_care.Controllers
                 var client = await _clientRepository.GetClientById(id);
 
                 if (client == null) return NotFound("Client not found");
-
-                var clientJson = JsonConvert.SerializeObject(client);
+ 
+                var clientResponse = new ClientResponse(client);
+                var clientJson = JsonConvert.SerializeObject(clientResponse);
 
                 var qrCode = QrCodeService.GenerateByteArray(clientJson);
 

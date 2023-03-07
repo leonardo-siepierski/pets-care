@@ -165,6 +165,5 @@ namespace pets_care.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    
     }
 }

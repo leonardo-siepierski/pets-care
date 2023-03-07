@@ -89,18 +89,6 @@ namespace pets_care.Test;
         }
 
         [Fact]
-        public async Task Post_CreatePet_ReturnsOk()
-        {
-
-        }
-
-        [Fact]
-        public async Task Post_CreatePet_ThrowsException()
-        {
-
-        }
-
-        [Fact]
         public async Task Post_CreatePet_ThrowsExceptionBadRequest()
         {
 
